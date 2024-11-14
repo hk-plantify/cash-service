@@ -1,3 +1,24 @@
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}
+
 spring:
   application:
-    name: cash
+    name: item
+  datasource:
+    url: ENC(HsUj0dmj4vXQZyVSgjTc4ZFAPbyWMSq+RmB3r7bt3BMIr1c+1qoH4GW78bpdFLhh5S2YrniYk09O0NWmSYhPPZjL/zJl144rOqHFYz55ut8=)
+    username: ENC(XhGT41xwg0J9hSXkV9tPjQ==)
+    password: ENC(cOWaniGDoCFEXR9v+wRBVEwsJ5Hg6vQN)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+auth:
+  service:
+    url: http://localhost:8080
