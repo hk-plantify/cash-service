@@ -1,6 +1,7 @@
-package com.plantify.cash.client;
+package com.plantify.cash.util;
 
-import com.plantify.cash.domain.dto.response.UserResponse;
+import com.plantify.cash.client.AuthServiceClient;
+import com.plantify.cash.domain.dto.response.AuthUserResponse;
 import com.plantify.cash.global.exception.ApplicationException;
 import com.plantify.cash.global.exception.errorCode.AuthErrorCode;
 import com.plantify.cash.global.response.ApiResponse;
@@ -14,8 +15,8 @@ public class UserInfoProvider {
 
     private final AuthServiceClient authServiceClient;
 
-    public UserResponse getUserInfo(String authorizationHeader) {
-        ApiResponse<UserResponse> response = authServiceClient.getUserInfo(authorizationHeader);
+    public AuthUserResponse getUserInfo(String authorizationHeader) {
+        ApiResponse<AuthUserResponse> response = authServiceClient.getUserInfo(authorizationHeader);
         if (response.getStatus() == HttpStatus.OK) {
             return response.getData();
         } else {
