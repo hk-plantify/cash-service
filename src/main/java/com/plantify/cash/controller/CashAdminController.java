@@ -2,10 +2,10 @@ package com.plantify.cash.controller;
 
 import com.plantify.cash.domain.dto.response.CashAdminResponse;
 import com.plantify.cash.domain.dto.resquest.CashAdminRequest;
+import com.plantify.cash.domain.dto.resquest.CashGrantRequest;
 import com.plantify.cash.global.response.ApiResponse;
 import com.plantify.cash.service.CashAdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,32 +15,37 @@ public class CashAdminController {
 
     private final CashAdminService cashAdminService;
 
-    // 캐시 단체 지급
-    @PostMapping
-    public ResponseEntity<ApiResponse<CashAdminResponse>> createCash(@RequestBody CashAdminRequest request) {
-        CashAdminResponse response = cashAdminService.createCash(request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
-    }
-
-    // 특정 사용자 캐시 추간
+    // 특정 사용자 캐시 지급
     @PostMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<CashAdminResponse>> createCashByUser(
+    public ApiResponse<CashAdminResponse> createCashByUserId(
             @PathVariable Long userId, @RequestBody CashAdminRequest request) {
-        CashAdminResponse response = cashAdminService.createCashByUser(userId, request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        CashAdminResponse response = cashAdminService.createCashByUserId(userId, request);
+        return ApiResponse.ok(response);
     }
 
     // 특정 사용자 현재 캐시 조회
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<CashAdminResponse>> updateCashByUserId(@PathVariable Long userId) {
-        CashAdminResponse response = cashAdminService.updateCashByUserId(userId);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+    public ApiResponse<CashAdminResponse> getCashByUserId(@PathVariable Long userId) {
+        CashAdminResponse response = cashAdminService.getCashByUserId(userId);
+        return ApiResponse.ok(response);
     }
 
     // 특정 사용자 캐시 차감
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<Void>> deleteCashByUserId(@PathVariable Long userId) {
-        cashAdminService.deleteCashByUserId(userId);
-        return ResponseEntity.ok(ApiResponse.ok());
+    public ApiResponse<Void> deleteCashByUserId(
+            @PathVariable Long userId, @RequestParam(required = false) Long amount) {
+        if (amount == null) {
+            cashAdminService.deleteAllCashByUserId(userId);
+        } else {
+            cashAdminService.deductCashByUserId(userId, amount);
+        }
+        return ApiResponse.ok();
+    }
+
+    // 보상 캐시 지급
+    @PostMapping("/events/reward")
+    public ApiResponse<Void> rewardCash(@RequestBody CashGrantRequest request) {
+        cashAdminService.rewardCash(request);
+        return ApiResponse.ok();
     }
 }
