@@ -13,17 +13,16 @@ public enum CashErrorCode implements ErrorCode {
     CASH_RECORD_NOT_FOUND(HttpStatus.NOT_FOUND, "캐시 기록을 찾을 수 없습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다.");
 
-
     private final HttpStatus httpStatus;
-    private final String code;
+    private final String message;
 
     @Override
     public HttpStatus getHttpStatus() {
-        return null;
+        return httpStatus;
     }
 
     @Override
     public String getMessage() {
-        return "";
+        return message;
     }
 }
