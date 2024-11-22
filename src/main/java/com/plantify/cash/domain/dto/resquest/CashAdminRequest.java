@@ -6,13 +6,11 @@ import com.plantify.cash.domain.entity.Type;
 import java.util.List;
 
 public record CashAdminRequest(
-        Long userId,
-        List<Long> userIds,
         Long amount,
         String type
 ) {
 
-    public Cash toEntity() {
+    public Cash toEntity(Long userId) {
         return Cash.builder()
                 .userId(userId)
                 .cashBalance(amount)

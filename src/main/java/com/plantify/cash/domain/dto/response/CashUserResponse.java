@@ -21,4 +21,14 @@ public record CashUserResponse(
                 cash.getUpdatedAt()
         );
     }
+
+    public static CashUserResponse empty() {
+        return new CashUserResponse(
+                0L,
+                0L,
+                0L,
+                null,
+                null
+        );
+    }
 }

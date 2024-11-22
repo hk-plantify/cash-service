@@ -11,8 +11,9 @@ public record CashUserRequest(
     public Cash toEntity(Long userId) {
         return Cash.builder()
                 .userId(userId)
-                .cashBalance(-amount)
-                .type(Type.valueOf(type))
+                .cashBalance(amount)
+                .type(type != null ? Type.valueOf(type) : Type.USAGE)
                 .build();
     }
+    
 }
