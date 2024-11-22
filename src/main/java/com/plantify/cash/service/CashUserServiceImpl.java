@@ -21,7 +21,7 @@ public class CashUserServiceImpl implements CashUserService {
     public CashUserResponse buyByCash(CashUserRequest request) {
         Long userId = userInfoProvider.getUserInfo().userId();
         Cash currentCash = cashRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApplicationException(CashErrorCode.USER_NOT_FOUND));
+                .orElse(request.toEntity(userId));
 
         if (currentCash.getCashBalance() < request.amount()) {
             throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
@@ -39,9 +39,8 @@ public class CashUserServiceImpl implements CashUserService {
     @Override
     public CashUserResponse getCurrentCash() {
         Long userId = userInfoProvider.getUserInfo().userId();
-        Cash currentCash = cashRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApplicationException(CashErrorCode.USER_NOT_FOUND));
-
-        return CashUserResponse.from(currentCash);
+        return cashRepository.findByUserId(userId)
+                .map(CashUserResponse::from)
+                .orElse(CashUserResponse.empty());
     }
 }

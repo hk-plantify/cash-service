@@ -5,7 +5,6 @@ import com.plantify.cash.domain.dto.resquest.CashUserRequest;
 import com.plantify.cash.global.response.ApiResponse;
 import com.plantify.cash.service.CashUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,15 +14,17 @@ public class CashUserController {
     
     private final CashUserService cashUserService;
 
+    // 캐시로 결제
     @PostMapping("/use")
-    public ResponseEntity<ApiResponse<CashUserResponse>> buyByCash(@RequestBody CashUserRequest request) {
-        CashUserResponse response = cashUserService.buyByCash();
-        return ResponseEntity.ok(ApiResponse.ok(response));
+    public ApiResponse<CashUserResponse> buyByCash(@RequestBody CashUserRequest request) {
+        CashUserResponse response = cashUserService.buyByCash(request);
+        return ApiResponse.ok(response);
     }
 
+    // 현재 보유 캐시 조회
     @GetMapping
-    public ResponseEntity<ApiResponse<CashUserResponse>> getCurrentCash() {
+    public ApiResponse<CashUserResponse> getCurrentCash() {
         CashUserResponse response = cashUserService.getCurrentCash();
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 }
