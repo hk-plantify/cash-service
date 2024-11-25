@@ -2,11 +2,12 @@ package com.plantify.cash.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.core.serializer.Serializer;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public class ApiResponse<T> {
+public class ApiResponse<T>  {
 
     private Integer status;
     private String message;
