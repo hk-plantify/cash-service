@@ -1,4 +1,4 @@
-package com.plantify.cash.util;
+package com.plantify.cash.global.util;
 
 import com.plantify.cash.client.AuthServiceClient;
 import com.plantify.cash.domain.dto.response.AuthUserResponse;

@@ -6,7 +6,7 @@ import com.plantify.cash.domain.entity.Cash;
 import com.plantify.cash.global.exception.ApplicationException;
 import com.plantify.cash.global.exception.errorCode.CashErrorCode;
 import com.plantify.cash.repository.CashRepository;
-import com.plantify.cash.util.UserInfoProvider;
+import com.plantify.cash.global.util.UserInfoProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -21,4 +21,4 @@ spring:
 
 auth:
   service:
-    url: http://localhost:8080
+    url: http://auth-service.auth.svc:8080
