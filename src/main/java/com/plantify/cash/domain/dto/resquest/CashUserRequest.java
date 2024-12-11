@@ -4,6 +4,7 @@ import com.plantify.cash.domain.entity.Cash;
 import com.plantify.cash.domain.entity.Type;
 
 public record CashUserRequest(
+        Long userId,
         Long amount,
         String type
 ) {
@@ -12,8 +13,7 @@ public record CashUserRequest(
         return Cash.builder()
                 .userId(userId)
                 .cashBalance(amount)
-                .type(type != null ? Type.valueOf(type) : Type.USAGE)
+                .type(type != null ? Type.valueOf(type) : Type.USE)
                 .build();
     }
-    
 }

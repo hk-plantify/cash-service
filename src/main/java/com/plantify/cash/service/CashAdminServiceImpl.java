@@ -22,23 +22,12 @@ public class CashAdminServiceImpl implements CashAdminService {
     @Override
     public CashAdminResponse createCashByUserId(Long userId, CashAdminRequest request) {
         Cash cash = cashRepository.findByUserId(userId).orElse(
-                Cash.builder()
-                        .userId(userId)
-                        .cashBalance(0L)
-                        .accumulatedCash(0L)
-                        .redeemedCash(0L)
-                        .type(Type.valueOf(request.type()))
-                        .build()
+                new Cash().init(userId, request.type())
         );
+        cash.increase(request.amount());
+        cashRepository.save(cash);
 
-        Cash updatedCash = cash.toBuilder()
-                .cashBalance(cash.getCashBalance() + request.amount())
-                .accumulatedCash(cash.getAccumulatedCash() + request.amount())
-                .build();
-
-        cashRepository.save(updatedCash);
-
-        return CashAdminResponse.from(updatedCash);
+        return CashAdminResponse.from(cash);
     }
 
     @Override
@@ -65,13 +54,8 @@ public class CashAdminServiceImpl implements CashAdminService {
         if (cash.getCashBalance() < amountToDeduct) {
             throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
         }
-
-        Cash updatedCash = cash.toBuilder()
-                .cashBalance(cash.getCashBalance() - amountToDeduct)
-                .redeemedCash(cash.getRedeemedCash() + amountToDeduct)
-                .build();
-
-        cashRepository.save(updatedCash);
+        Cash decreased = cash.decrease(amountToDeduct);
+        cashRepository.save(decreased);
     }
 
     @Override

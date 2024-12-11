@@ -1,5 +1,5 @@
 package com.plantify.cash.domain.entity;
 
 public enum Type {
-    ATTENDANCE, EVENT, USAGE, GRANT
+    ATTENDANCE, EVENT, USE, GRANT
 }

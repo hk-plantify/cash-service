@@ -19,21 +19,16 @@ public class CashUserServiceImpl implements CashUserService {
 
     @Override
     public CashUserResponse buyByCash(CashUserRequest request) {
-        Long userId = userInfoProvider.getUserInfo().userId();
-        Cash currentCash = cashRepository.findByUserId(userId)
-                .orElse(request.toEntity(userId));
+        Cash currentCash = cashRepository.findByUserId(request.userId())
+                .orElse(request.toEntity(request.userId()));
 
         if (currentCash.getCashBalance() < request.amount()) {
             throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
         }
 
-        Cash updatedCash = currentCash.toBuilder()
-                .cashBalance(currentCash.getCashBalance() - request.amount())
-                .redeemedCash(currentCash.getRedeemedCash() + request.amount())
-                .build();
-        cashRepository.save(updatedCash);
-
-        return CashUserResponse.from(updatedCash);
+        Cash decreased = currentCash.decrease(request.amount());
+        Cash save = cashRepository.save(decreased);
+        return CashUserResponse.from(save);
     }
 
     @Override

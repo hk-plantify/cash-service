@@ -52,4 +52,26 @@ public class Cash {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public Cash init(Long userId, Type type) {
+        this.userId = userId;
+        this.cashBalance = 0L;
+        this.accumulatedCash = 0L;
+        this.redeemedCash = 0L;
+        this.type = type;
+        return this;
+    }
+
+    public Cash increase(long amount) {
+        this.cashBalance += amount;
+        this.accumulatedCash += amount;
+        return this;
+    }
+
+    public Cash decrease(long amount) {
+        this.cashBalance -= amount;
+        this.accumulatedCash += amount;
+        this.redeemedCash += amount;
+        return this;
+    }
 }
