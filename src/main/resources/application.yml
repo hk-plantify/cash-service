@@ -22,5 +22,3 @@ spring:
 auth:
   service:
     url: http://localhost:8888
-server:
-  port: 2222
