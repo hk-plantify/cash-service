@@ -1,6 +1,7 @@
 package com.plantify.cash.service;
 
 import com.plantify.cash.domain.dto.TransactionStatusMessage;
+import com.plantify.cash.domain.entity.Type;
 import com.plantify.cash.global.exception.ApplicationException;
 import com.plantify.cash.global.exception.errorCode.CashErrorCode;
 import com.plantify.cash.repository.CashRepository;
@@ -22,7 +23,8 @@ public class CashTransactionStatusServiceImpl implements CashTransactionStatusSe
         try {
             cashRepository.findByUserId(message.userId())
                     .orElseThrow(() -> new ApplicationException(CashErrorCode.USER_NOT_FOUND))
-                    .increase((long) (message.amount() * CASH_REWARD_RATE));
+                    .increase((long) (message.amount() * CASH_REWARD_RATE))
+                    .updateType(Type.GRANT);
         } catch (Exception e) {
             log.error("Error handling transaction status message: {}", e.getMessage());
         }

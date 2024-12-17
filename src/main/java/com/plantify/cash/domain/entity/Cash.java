@@ -74,4 +74,9 @@ public class Cash {
         this.redeemedCash += amount;
         return this;
     }
+
+    public Cash updateType(Type type) {
+        this.type = type;
+        return this;
+    }
 }

@@ -23,10 +23,10 @@ public class CashConsumer {
     public void handleTransactionStatus(TransactionStatusMessage message) {
         log.info("Received TransactionStatusMessage: {}", message);
         try {
-            if (message.status().equals("PAYMENT")) {
-                cashTransactionStatusService.processSuccessfulTransaction(message);
-            } else {
-                log.warn("Unknown status: {}", message.status());
+            switch (message.status()) {
+                case PAYMENT -> cashTransactionStatusService.processSuccessfulTransaction(message);
+                case FAILED -> cashTransactionStatusService.processFailedTransaction(message);
+                default -> log.warn("Unknown status: {}", message.status());
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
