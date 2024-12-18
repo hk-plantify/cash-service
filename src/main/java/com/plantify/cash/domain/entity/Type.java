@@ -1,5 +1,8 @@
 package com.plantify.cash.domain.entity;
 
-public enum Type {
+import java.io.Serializable;
+
+public enum Type implements Serializable {
+
     ATTENDANCE, EVENT, USE, GRANT
 }

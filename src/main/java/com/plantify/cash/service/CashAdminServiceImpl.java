@@ -4,7 +4,6 @@ import com.plantify.cash.domain.dto.response.CashAdminResponse;
 import com.plantify.cash.domain.dto.resquest.CashAdminRequest;
 import com.plantify.cash.domain.dto.resquest.CashGrantRequest;
 import com.plantify.cash.domain.entity.Cash;
-import com.plantify.cash.domain.entity.Type;
 import com.plantify.cash.global.exception.ApplicationException;
 import com.plantify.cash.global.exception.errorCode.CashErrorCode;
 import com.plantify.cash.repository.CashRepository;
@@ -21,10 +20,9 @@ public class CashAdminServiceImpl implements CashAdminService {
 
     @Override
     public CashAdminResponse createCashByUserId(Long userId, CashAdminRequest request) {
-        Cash cash = cashRepository.findByUserId(userId).orElse(
-                new Cash().init(userId, request.type())
-        );
-        cash.increase(request.amount());
+        Cash cash = cashRepository.findByUserId(userId)
+                .orElse(new Cash().init(userId, request.type()))
+                .increase(request.amount());
         cashRepository.save(cash);
 
         return CashAdminResponse.from(cash);
@@ -49,19 +47,14 @@ public class CashAdminServiceImpl implements CashAdminService {
     @Override
     public void deductCashByUserId(Long userId, Long amountToDeduct) {
         Cash cash = cashRepository.findByUserId(userId)
-                .orElseThrow(() -> new ApplicationException(CashErrorCode.USER_NOT_FOUND));
-
-        if (cash.getCashBalance() < amountToDeduct) {
-            throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
-        }
-        Cash decreased = cash.decrease(amountToDeduct);
-        cashRepository.save(decreased);
+                .orElseThrow(() -> new ApplicationException(CashErrorCode.USER_NOT_FOUND))
+                .decrease(amountToDeduct);
+        cashRepository.save(cash);
     }
 
     @Override
     public void rewardCash(CashGrantRequest request) {
         List<Cash> cashEntities = request.toEntities();
-
         cashRepository.saveAll(cashEntities);
     }
 }

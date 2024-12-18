@@ -1,5 +1,7 @@
 package com.plantify.cash.domain.entity;
 
+import com.plantify.cash.global.exception.ApplicationException;
+import com.plantify.cash.global.exception.errorCode.CashErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,8 +71,10 @@ public class Cash {
     }
 
     public Cash decrease(long amount) {
+        if (this.cashBalance < amount) {
+            throw new ApplicationException(CashErrorCode.INSUFFICIENT_BALANCE);
+        }
         this.cashBalance -= amount;
-        this.accumulatedCash += amount;
         this.redeemedCash += amount;
         return this;
     }
