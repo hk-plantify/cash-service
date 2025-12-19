@@ -1,12 +1,9 @@
 package com.plantify.cash.global.util;
 
-import com.plantify.cash.client.AuthServiceClient;
 import com.plantify.cash.domain.dto.response.AuthUserResponse;
 import com.plantify.cash.global.exception.ApplicationException;
 import com.plantify.cash.global.exception.errorCode.AuthErrorCode;
-import com.plantify.cash.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
