@@ -15,6 +15,11 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "userId")
+        }
+)
 public class Cash {
 
     @Id
@@ -76,11 +81,6 @@ public class Cash {
         }
         this.cashBalance -= amount;
         this.redeemedCash += amount;
-        return this;
-    }
-
-    public Cash updateType(Type type) {
-        this.type = type;
         return this;
     }
 }
